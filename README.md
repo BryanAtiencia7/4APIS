@@ -15,7 +15,11 @@ python app.py
 ## 4. Use the next URL:
 
 REST: http://localhost:5001/hello
+
 GraphQL: http://localhost:5002/graphql
+
 SSE: http://localhost:5003/events
+
 WebSocket: ws://localhost:5004
+
 HTML: Run with live server
