@@ -1,0 +1,4 @@
+flask
+Flask-GraphQL
+graphene
+websockets

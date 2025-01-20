@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consume APIs</title>
+</head>
+<body>
+    <h1>Consume APIs</h1>
+
+    <section>
+        <h2>REST API</h2>
+        <button onclick="consumeREST()">Fetch from REST</button>
+        <p id="rest-result"></p>
+    </section>
+
+    <section>
+        <h2>GraphQL API</h2>
+        <button onclick="consumeGraphQL()">Fetch from GraphQL</button>
+        <p id="graphql-result"></p>
+    </section>
+
+    <section>
+        <h2>gRPC API</h2>
+        <p>Requires a separate client, cannot be directly tested in the browser.</p>
+    </section>
+
+    <section>
+        <h2>SOAP API</h2>
+        <p>SOAP APIs require tools like Postman or SoapUI.</p>
+    </section>
+
+    <section>
+        <h2>Server-Sent Events (SSE)</h2>
+        <button onclick="connectSSE()">Connect to SSE</button>
+        <p id="sse-result"></p>
+    </section>
+
+    <section>
+        <h2>WebSocket API</h2>
+        <button onclick="connectWebSocket()">Connect to WebSocket</button>
+        <p id="websocket-result"></p>
+    </section>
+
+    <script>
+        async function consumeREST() {
+            const response = await fetch('http://localhost:5000/hello');
+            const data = await response.json();
+            document.getElementById('rest-result').textContent = data.message;
+        }
+
+        async function consumeGraphQL() {
+            const query = JSON.stringify({ query: "{ hello }" });
+            const response = await fetch('http://localhost:5000/graphql', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: query,
+            });
+            const data = await response.json();
+            document.getElementById('graphql-result').textContent = data.data.hello;
+        }
+
+        function connectSSE() {
+            const eventSource = new EventSource('http://localhost:5000/events');
+            eventSource.onmessage = function (event) {
+                document.getElementById('sse-result').textContent = event.data;
+            };
+        }
+
+        function connectWebSocket() {
+            const ws = new WebSocket('ws://localhost:8765');
+            ws.onmessage = function (event) {
+                document.getElementById('websocket-result').textContent = event.data;
+            };
+        }
+    </script>
+</body>
+</html>
